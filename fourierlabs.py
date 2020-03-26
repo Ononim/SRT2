@@ -46,6 +46,27 @@ if __name__ == "__main__":
             s += get_signal_point(i, W * j / HARM, AMPL, SHIFT)
         signal.append(s)
 
+    new_signal = list()
+
+    for i in range(int(pow(2, 12))):
+        s = 0
+        for j in range(HARM):
+            s += get_signal_point(i, W * j / HARM, AMPL, SHIFT)
+        new_signal.append(s)
+
+    time_np_st = time()
+    f.fft(new_signal)
+    time_np_f = time()
+    time_np = time_np_f - time_np_st
+
+    time_my_st = time()
+    get_fft(new_signal)
+    time_my_f = time()
+    time_my = time_my_f - time_my_st
+
+    print(time_np)
+    print(time_my)
+    print(f"{'Custom FFT' if time_my < time_np else 'Numpy FFT'} is faster")
     plt.subplot(221)
     plt.ylabel('DFT')
     plt.plot(get_real(get_dft(signal)))
